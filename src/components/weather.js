@@ -1,8 +1,7 @@
 import React,{useEffect, useState} from "react";
-import { ReactComponent as LocationIcon } from '../icons/location.svg';
 import '../styles/weather.css'
 import { useSelector, useDispatch } from 'react-redux'
-import {saveWeather} from '../slices/weatherSlice'
+import {fetchWeather} from '../slices/weatherSlice'
 import Datetime from './datetime'
 
 function Weather() {
@@ -12,21 +11,6 @@ function Weather() {
     const climateDetails = useSelector((state) => state.weather.foreCast)
     const dispatch = useDispatch()
 
-
-    const getWeatherUpdates= ()=>{
-        if(!lat && !long)
-            return false;
-        let apiKey = "07df1a41cb1bc97189c7685b087c9029"
-        let baseUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=${apiKey}&units=metric`
-        console.log(baseUrl)
-        fetch(baseUrl)
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                dispatch(saveWeather(data))
-            });
-    }
-
     useEffect(()=>{
         let geoId=window.navigator.geolocation.getCurrentPosition(position=>{
                 setlat(position.coords.latitude)
@@ -35,43 +19,27 @@ function Weather() {
     },[])
 
     useEffect(() => {
-        getWeatherUpdates();
+        if(lat && long)
+        dispatch(fetchWeather({lat:lat,long : long}));
       }, [lat,long])
 
    return (
      <>
-        {/* <div className="basic-info">
-            <div className = "location-info">
-                <LocationIcon />
-                <p> {climateDetails?.name} </p>
-            
-            </div>
-            <div className="climate-info">
-                <img src={`http://openweathermap.org/img/w/${climateDetails.weather?.[0]?.icon}.png`} />
-                
-            </div>
-            
-
-        </div> */}
-
         <article className="widget">
             <div className="weatherInfo">
                 <div className="temperature">
-                    <span>{parseInt(climateDetails?.main?.temp)}&deg;</span>
+                    <span>{parseInt(climateDetails?.main?.temp || 20)}&deg;</span>
                     <div className="place">{climateDetails?.name}</div>
                 </div>
                 <div className="description">
-                    <img src={`http://openweathermap.org/img/w/${climateDetails.weather?.[0]?.icon}.png`} />
+                    <img src={`http://openweathermap.org/img/w/${climateDetails.weather?.[0]?.icon || "04d"}.png`} />
                     <div className="weatherCondition">{climateDetails.weather?.[0]?.main}</div>     
                 </div>
                 <div className="date-info">
                     <Datetime />
                 </div>
             </div>
-            
         </article>
-            
-        
      </>
    )
 }
