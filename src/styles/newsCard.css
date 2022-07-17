@@ -133,3 +133,7 @@
   -webkit-transform: translateX(0%);
   transform: translateX(0%);
 }
+
+figcaption:hover {
+  cursor: pointer;
+}

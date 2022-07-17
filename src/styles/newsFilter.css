@@ -1,21 +1,21 @@
   .filter-container{
     display: flex;
     justify-content: center;
+    margin-bottom: 20px;
   }
   .searchwrapper {
-    width: 90%;
+    width: 30%;
   }
   .searchbox {
     background-color:#fff;
-    padding: 10px 76px 10px 40px;
+    padding: 10px 5px 10px 5px;
     border-radius: 50px;
   }
- 
 
   .searchbox .row{
     display: flex;
-    justify-content: center;
-    align-items: baseline;
+    justify-content: space-around;
+    align-items: center;
   }
 
   .searchbox  .searchbox .input-wrapper { 
@@ -34,5 +34,7 @@
   }
   .searchbox .btn { border-radius:40px; padding:20px 40px; }
   
-
+  input.btn.btn-primary.form-control:hover {
+    background: #bac7ed;
+  }
  
