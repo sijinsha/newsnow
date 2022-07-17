@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React from "react";
 import '../../styles/newsCard.css'
 
 
@@ -7,11 +7,11 @@ function NewsCard({item}){
     const date = new Date(item.publishedAt)
     const month = date.toLocaleString('default', { month: 'long' });
     const day = date.getDate();
-    const time = date.toLocaleTimeString('en-US')
+    const defaultImg = 'https://www.reuters.com/pf/resources/images/reuters/reuters-default.png?d=99'
     return (
         <>
         <figure className="article">
-            <div className="image"><img src={item?.urlToImage} alt="ls-sample1" /></div>
+            <div className="image"><img src={item?.urlToImage || defaultImg} alt="ls-sample1" /></div>
             <figcaption>
                 <div className="date"><span className="day">{day}</span><span className="month">{month}</span></div>
                 <h3>{item.title}</h3>
@@ -22,7 +22,6 @@ function NewsCard({item}){
                 {item.source?.name &&<div className="source"><i className="ion-bookmark"></i>{item.source.name}</div>}
                 </footer>
             </figcaption>
-            <a href="#"></a>
             </figure>
         </>
     )

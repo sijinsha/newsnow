@@ -7,7 +7,9 @@ const initialState = {
 }
 
 export const fetchNews = createAsyncThunk('news/fetchNews',async (filters) => {
-    let url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${NEWS_KEY}`
+    let searchTerm = filters.search ? `&q=${filters.search}&searchIn=Title` :''
+    let language = filters.lang || 'en'
+    let url = `https://newsapi.org/v2/top-headlines?language=${language}${searchTerm}&pageSize=20&sortBy=popularity&apiKey=${NEWS_KEY}`
     try{
         const resp = await fetch(url)
         return await resp.json();

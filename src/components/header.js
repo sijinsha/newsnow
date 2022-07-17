@@ -12,9 +12,6 @@ function Header(){
             </div>
             <Weather />
         </div>
-        <div className = "climate">
-           
-        </div>
         </>
         
     )

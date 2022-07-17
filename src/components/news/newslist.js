@@ -3,6 +3,7 @@ import { useSelector,useDispatch } from "react-redux";
 import NewsCard from './newsCard'
 import {fetchNews} from '../../slices/newsSlice'
 import '../../styles/newsList.css'
+import NewsFilter from "./newsFilter";
 
 function NewsList(){
 
@@ -16,6 +17,7 @@ function NewsList(){
 
     return (
         <>
+        <NewsFilter />
         <div className="news-list">
             {newsItems && newsItems.map((news,i) => (
                 <NewsCard key = {i} item={news}/>
