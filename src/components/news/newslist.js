@@ -1,13 +1,16 @@
 import React, {useState, useEffect}  from "react";
 import { useSelector,useDispatch } from "react-redux";
 import NewsCard from './newsCard'
-import {fetchNews} from '../../slices/newsSlice'
+import {fetchNews,updatePage,fetchMore} from '../../slices/newsSlice'
 import '../../styles/newsList.css'
 import NewsFilter from "./newsFilter";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 function NewsList(){
 
     const newsItems = useSelector(state => state.news.enitities.articles)
+    const details = useSelector(state => state.news.enitities)
+    //const 
 
     const dispatch = useDispatch();
 
@@ -15,14 +18,27 @@ function NewsList(){
         dispatch(fetchNews({search : "",lang : ""}))
     }, [])
 
+    const fetchMoreNews = ()=>{
+        console.log('test')
+        dispatch(updatePage())
+        dispatch(fetchMore())
+
+    }
+
     return (
         <>
         <NewsFilter />
+        <InfiniteScroll
+                dataLength={newsItems?.length || 8} 
+                next={fetchMoreNews}
+                hasMore={(newsItems?.length || 8) !== (details?.totalResults || 0 )}
+                loader={<div>Loading</div>} >
         <div className="news-list">
             {newsItems && newsItems.map((news,i) => (
-                <NewsCard key = {i} item={news}/>
+                <NewsCard key = {news.url} item={news}/>
             ))}
         </div>
+        </InfiniteScroll>
         </>
     )
 }

@@ -1,7 +1,7 @@
 import React,{useRef} from "react";
 import { useDispatch } from "react-redux";
 import '../../styles/newsFilter.css'
-import {fetchNews} from '../../slices/newsSlice'
+import {fetchNews,updateFilter} from '../../slices/newsSlice'
 
 
 function NewsFilter(){
@@ -11,9 +11,8 @@ function NewsFilter(){
     const language = useRef();
 
     const searchNews = ()=>{
-        
-        dispatch(fetchNews({search : searchTerm.current.value,lang : language.current.value}))
-
+        dispatch(updateFilter({search : searchTerm.current.value,lang : language.current.value}))
+        dispatch(fetchNews())
     }
 
     return (
