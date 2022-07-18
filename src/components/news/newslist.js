@@ -18,10 +18,16 @@ function NewsList() {
   }, []);
 
   const fetchMoreNews = () => {
-    console.log("test");
     dispatch(updatePage());
     dispatch(fetchMore());
   };
+
+  const loader = (
+    <div className="loading">
+      <div className="loader loader-black"></div>
+      <h2>Loading</h2>
+    </div>
+  );
 
   return (
     <>
@@ -30,11 +36,10 @@ function NewsList() {
         dataLength={newsItems?.length || 10}
         next={fetchMoreNews}
         hasMore={(newsItems?.length || 10) !== (details?.totalResults || 0)}
-        loader={<div>Loading</div>}
+        loader={loader}
       >
         <div className="news-list">
-          {newsItems &&
-            newsItems.map((news, i) => <NewsCard key={news.url} item={news} />)}
+          {newsItems && newsItems.map((news, i) => <NewsCard key={news.url} item={news} />)}
         </div>
       </InfiniteScroll>
     </>

@@ -10,32 +10,38 @@ const initialState = {
   language: "en",
 };
 
-const getData = async (getState) => {
+const getData = async (getState,rejectWithValue) => {
   let { news } = getState();
-  console.log(news);
   let searchTerm = news.searchTerm
     ? `&q=${news.searchTerm}&searchIn=Title`
     : "";
   let language = news.language || "en";
-  let url = `https://newsapi.org/v2/top-headlines?language=${language}${searchTerm}&pageSize=${news.pageSize}&page=${news.page}&apiKey=${NEWS_KEY}`;
+  let url = `https://newsapi.org/v2/top-headlines?language=${language}${searchTerm}&pageSize=${news.pageSize}&page=${news.page}&sortBy=publishedAt&apiKey=${NEWS_KEY}`;
   if (news.page <= 10) {
     //news api is developer more. Have resttictions above 100 results.
     try {
       const resp = await fetch(url);
-      return await resp.json();
+      const parsedResp = await resp.json();
+      if(parsedResp.status != 'ok')
+        rejectWithValue('')
+      return parsedResp
     } catch (error) {
       return error;
     }
   }
+  else{
+    rejectWithValue('')
+  }
 };
 
+//fetchNews thunk is to fetch the new for the firt time and while searching using filters, it reset the page and data
 export const fetchNews = createAsyncThunk(
   "news/fetchNews",
-  async (filters, { getState }) => {
-    return getData(getState);
+  async (filters, { getState, rejectWithValue }) => {
+    return await getData(getState,rejectWithValue);
   }
 );
-
+//fetchMore thunk is to append the next page result to the existing store
 export const fetchMore = createAsyncThunk(
   "news/fetchMore",
   async (filters, { getState }) => {
@@ -55,6 +61,10 @@ const newsSlice = createSlice({
       state.language = action.payload.lang;
       state.page = 1;
     },
+    updateLoading(state, action) {
+      state.loading = true;
+    }
+
   },
   extraReducers: {
     [fetchNews.pending]: (state) => {
@@ -84,6 +94,6 @@ const newsSlice = createSlice({
   },
 });
 
-export const { updatePage, updateFilter } = newsSlice.actions;
+export const { updatePage, updateFilter, updateLoading } = newsSlice.actions;
 
 export default newsSlice.reducer;

@@ -1,27 +1,23 @@
 .header{
     display: flex;
-    width: 100%;
-    color: #710303;
-}
-
-.heading{
-    flex : 2;
-    display : flex;
-    justify-content : flex-start;
-    margin : 3px 10px;
-}
-
-.weather{
-    flex: 1 1;
-    display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
-    margin : 3px 20px;
+    padding: 18px 5%;
+    color: #36454F;
+    background-color: #fff;
+}
+
+.title{
+    margin : 4px 6px;
 }
 
 .date-info{
     display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    flex-direction: column; 
+    flex-direction: column;
+    gap: 8px;
+    font-weight: 600; 
+}
+
+.date-info-date{
+    font-size: 1.2em;
 }
